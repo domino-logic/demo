@@ -24,6 +24,7 @@
   "homepage": "https://github.com/domino-logic/demo#readme",
   "dependencies": {
     "domino-web-service": "git+https://github.com/domino-logic/domino-web-service.git",
+    "domino-rabbitmq-messenger": "git+https://github.com/domino-logic/domino-rabbitmq-messenger.git",
     "domino-actor-service": "git+https://github.com/domino-logic/domino-actor-service.git"
   }
 }

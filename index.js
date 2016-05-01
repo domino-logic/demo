@@ -6,10 +6,9 @@ const cluster = require('cluster')
 const numCPUs = require('os').cpus().length
 const DWS = require('domino-web-service');
 const DAS = require('domino-actor-service');
+const DRM = require('domino-rabbitmq-messenger');
 
 const handlers = require('./handlers')
-
-const app = new DAS.ActionHandler()
 
 
 if(cluster.isMaster){
@@ -26,12 +25,19 @@ if(cluster.isMaster){
     console.log("worker #{worker.process.pid} died")
   });
 
-  DAS.messenger.start(function(){
+
+  const messenger = new DRM.Messenger()
+
+  messenger.start( (messenger) => {
+    const options = {messenger};
+
+    const app = new DAS.ActionHandler(options);
+
     app.domain('message')
     .actor('createMessage', handlers.messageHandler)
     .watcher('messageCreated', handlers.messageCreatedHandler)
-  })
 
+  })
 }
 
 else
